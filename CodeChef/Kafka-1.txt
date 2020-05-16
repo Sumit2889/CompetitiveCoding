@@ -1,0 +1,32 @@
+Steps to configure:
+___________________
+Prerequisites:
+-Install jdk 1.8(Set the path variable)
+-Download Kafka 2.11-1.0.0
+-Extract the kafka file, save it somewhere
+-Open Kafka file, go to config :
+	-Open server.properties and change the logs.dirs value to log.dirs=C:\kafka_2.11-1.0.0\kafka-test-logs
+	-open zookeeper.properties and change dataDir value to dataDir=C:\kafka_2.11-1.0.0\zookeeper_data
+-Open C:\kafka_2.11-1.0.0\bin\windows, copy/paste the location and set it to path in environment variables
+
+Starting servers:
+-Open the zookeeper and kafka servers in separate command prompts
+-Change the location in the prompt to C:\kafka_2.11-1.0.0\bin\windows
+-Starting Zookeeper server : zookeeper-server-start.bat ..\..\config\zookeeper.properties
+-Starting Kafka server : kafka-server-start.bat ..\..\config\server.properties 
+-We'll keep them running in the respective windows till the time we need them to be
+-Using ctrl+c we can close them
+
+Testing Kafka:
+-Start a new window on prompt
+-Excecute the broker shell and ask for the list of brocker ids : zookeeper-shell.bat localhost:2181 ls/brokers/ids
+-Create a kafka topic : kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+-Here 'test' is the topic name, it can be anything
+-Start a producer : kafka-console-producer.bat --broker-list localhost:9092 --topic test
+-Send some messages
+-Terminate the job with ctrl+c
+-Starting the consumer : kafka-console-consumer.bat --bootstrap-server localhost:9092  --topic test --from-beginning
+-It reads the messages from the beginning
+-listing all the topics : kafka-topics.bat --list --zookeeper localhost:2181
+-describing the particular topic : kafka-topics.bat --describe --zookeeper localhost:2181 --topic topicname
+
